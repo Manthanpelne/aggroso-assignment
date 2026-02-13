@@ -6,6 +6,12 @@ const connection = require("./config/db")
 
 
 //middlewares
+app.use(
+  cors({
+    origin: "*",
+    preflightContinue: true
+  })
+);
 
 app.use((req, res, next) => {
   // 1. Allow the origin (Wildcard is fine for testing)
