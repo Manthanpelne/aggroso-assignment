@@ -8,7 +8,12 @@ const connection = require("./config/db")
 //middlewares
 
 app.use(cors({
-  origin: "http://localhost:5173/"
+  origin: [
+    "http://localhost:5173", // For your local development
+    "https://stately-cassata-87348e.netlify.app" // For your live site
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 
 
