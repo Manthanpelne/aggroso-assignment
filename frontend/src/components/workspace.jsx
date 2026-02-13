@@ -8,7 +8,7 @@ export const Workspace = () => {
   const [filter, setFilter] = useState('all');
 
 const [currentMeetingId, setCurrentMeetingId] = useState(null);
-const [history, setHistory] = useState([])
+
   
   // Manual Add
   const handleAddItem = () => {
@@ -37,7 +37,7 @@ const handleProcess = async () => {
   }));
 
   // Save to DB immediately
-  const res = await fetch('http://localhost:5000/api/meetings', {
+  const res = await fetch('https://aggroso-assignment-ench.onrender.com/api/meetings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -62,7 +62,7 @@ const handleUpdateTask = async (taskId, updates) => {
 
   if (currentMeetingId) {
     try {
-      await fetch(`http://localhost:5000/api/meetings/${currentMeetingId}`, {
+      await fetch(`https://aggroso-assignment-ench.onrender.com/api/meetings/${currentMeetingId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ actionItems: updatedItems })
@@ -80,7 +80,7 @@ const handleDeleteTask = async (taskId) => {
 
   // 2. Sync the filtered list to the DB
   if (currentMeetingId) {
-    await fetch(`http://localhost:5000/api/meetings/${currentMeetingId}`, {
+    await fetch(`https://aggroso-assignment-ench.onrender.com/api/meetings/${currentMeetingId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ actionItems: filteredItems })
@@ -88,8 +88,7 @@ const handleDeleteTask = async (taskId) => {
   }
 };
 
-  
-console.log(items)
+
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
