@@ -15,6 +15,8 @@ app.get("/api-endpoint",(req,res)=>{
     res.send("api is working fine")
 })
 
+app.use("/api/meetings",require("./routes/meetings"))
+
 
 
 //routes
