@@ -1,41 +1,35 @@
-const express = require("express")
-const app = express()
-require("dotenv").config()
-const cors = require("cors")
-const connection = require("./config/db")
+const express = require("express");
+const app = express();
+require("dotenv").config();
+const cors = require("cors");
+const connection = require("./config/db");
 
 
-//middlewares
-app.use(cors());
+app.use(cors({
+    origin: "*", // Allows all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+    credentials: true
+}));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); 
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+// 2. Body Parser
+app.use(express.json());
 
-  // Handle Preflight
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-  next();
+// 3. Health Check
+app.get("/api-endpoint", (req, res) => {
+    res.send("api is working fine");
 });
 
-app.use(express.json())
+// 4. Routes
+app.use("/api/meetings", require("./routes/meetings"));
 
-
-app.get("/api-endpoint",(req,res)=>{
-    res.send("api is working fine")
-})
-
-app.use("/api/meetings",require("./routes/meetings"))
-
-
-
-//routes
-
-
-
-app.listen(process.env.port,async()=>{
-    connection()
-    console.log(`server running on port:${process.env.port}`)
-})
+// Start Server
+const PORT = process.env.port || 5000;
+app.listen(PORT, async () => {
+    try {
+        await connection();
+        console.log(`✅ Server running on port: ${PORT}`);
+    } catch (err) {
+        console.log("❌ DB Connection Error:", err);
+    }
+});
